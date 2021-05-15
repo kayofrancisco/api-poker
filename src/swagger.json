@@ -1,0 +1,55 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Documentação API",
+    "description": "Documentação da API de gerenciamento do poker",
+    "version": "1.0.0",
+    "contact": {
+      "email": "kayofrancisco@hotmail.com"
+    }
+  },
+  "paths": {
+    "/modalidades": {
+      "post": {
+        "symmary": "Criar modalidade",
+        "description": "Cria uma modalidade de poker",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "nome": {
+                  "type": "string"
+                },
+                "modo": {
+                  "type": "string"
+                }
+              },
+              "example": {
+                "nome": "Omaha 4",
+                "modo": "Cash"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Modalidade criada com sucesso"
+          },
+          "500": {
+            "description": "Categoria já existe"
+          }
+        }
+      },
+      "get": {
+        "symmary": "Listar modalidades",
+        "description": "Lista todas as modalidades cadastradas",
+        "responses": {
+          "200": {
+            "description": "Lista as modalidades cadastradas"
+          }
+        }
+      }
+    }
+  }
+}
