@@ -1,46 +1,43 @@
-import Clube from '../../model/Clube';
+import { getRepository, Repository } from 'typeorm';
+
+import Clube from '../../entities/Clube';
 import { IClubeRepository, ICriarClubeDTO } from '../IClubeRepository';
 
 export default class ClubeRepository implements IClubeRepository {
-  private clubes: Clube[];
-  private static INSTANCE: ClubeRepository;
+  private repository: Repository<Clube>;
 
-  private constructor() {
-    this.clubes = [];
+  constructor() {
+    this.repository = getRepository(Clube);
   }
 
-  public static getInstance(): ClubeRepository {
-    return this.INSTANCE ? this.INSTANCE : new ClubeRepository();
-  }
-
-  criar({ nome, rakeback }: ICriarClubeDTO): Clube {
-    const clube = new Clube();
-    Object.assign(clube, { nome, rakeback });
-
-    this.clubes.push(clube);
+  async criar({ nome, rakeback }: ICriarClubeDTO): Promise<Clube> {
+    const clube = await this.repository.save(this.repository.create({ nome, rakeback }));
 
     return clube;
   }
 
-  buscarTodos(): Clube[] {
-    return this.clubes;
+  async buscarTodos(): Promise<Clube[]> {
+    const clubes = await this.repository.find();
+    return clubes;
   }
 
-  buscarPorNome(nome: string): Clube {
-    return this.clubes.find((clube) => clube.nome === nome);
+  async buscarPorNome(nome: string): Promise<Clube> {
+    const clube = this.repository.findOne({ where: { nome } });
+
+    return clube;
   }
 
-  editar(id: string, { nome, rakeback }: ICriarClubeDTO): Clube {
-    const clubeIndex = this.clubes.findIndex((item) => item.id === id);
+  async editar(id: string, { nome, rakeback }: ICriarClubeDTO): Promise<Clube> {
+    const clube = await this.repository.findOne({ where: { id } });
 
-    Object.assign(this.clubes[clubeIndex], { nome, rakeback });
+    Object.assign(clube, { nome, rakeback });
 
-    return this.clubes[clubeIndex];
+    await this.repository.save(clube);
+
+    return clube;
   }
 
-  excluir(id: string): void {
-    const index = this.clubes.findIndex((item) => item.id === id);
-
-    this.clubes.splice(index, 1);
+  async excluir(id: string): Promise<void> {
+    await this.repository.delete(id);
   }
 }

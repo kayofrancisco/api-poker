@@ -1,7 +1,7 @@
 import { v4 as Uuidv4 } from 'uuid';
 
-import Clube from '../../clubes/model/Clube';
-import Modalidade from '../../modalidades/model/Modalidade';
+import Clube from '../../clubes/entities/Clube';
+import Modalidade from '../../modalidades/entities/Modalidade';
 
 export default class Partida {
   id: string;

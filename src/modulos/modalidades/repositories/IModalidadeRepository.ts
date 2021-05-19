@@ -1,4 +1,4 @@
-import Modalidade from '../model/Modalidade';
+import Modalidade from '../entities/Modalidade';
 
 export interface ICriarModalidadeDTO {
   nome: string;

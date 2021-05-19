@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
-import Clube from '../../clubes/model/Clube';
-import Modalidade from '../../modalidades/model/Modalidade';
-import Partida from '../model/Partida';
+import Clube from '../../clubes/entities/Clube';
+import Modalidade from '../../modalidades/entities/Modalidade';
+import Partida from '../entities/Partida';
 
 export interface ICriarPartidaDTO {
   clube: Clube;

@@ -1,8 +1,13 @@
+import 'reflect-metadata';
 import express from 'express';
 import swagger from 'swagger-ui-express';
 
 import rotas from './routes/intex';
 import arquivoSwagger from './swagger.json';
+
+import './database';
+
+import './shared/container';
 
 const app = express();
 

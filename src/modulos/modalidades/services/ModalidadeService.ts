@@ -1,4 +1,4 @@
-import Modalidade from '../model/Modalidade';
+import Modalidade from '../entities/Modalidade';
 import { IModalidadeRepository } from '../repositories/IModalidadeRepository';
 
 interface IModalidadeDTO {

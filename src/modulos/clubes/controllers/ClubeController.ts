@@ -1,31 +1,35 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 
 import ClubeService from '../services/ClubeService';
 
 export default class ClubeController {
-  constructor(private service: ClubeService) { }
-
-  criar(req: Request, res: Response): Response {
+  async criar(req: Request, res: Response): Promise<Response> {
     const { nome, rakeback } = req.body;
 
-    const clube = this.service.criar({ nome, rakeback });
+    const service = container.resolve(ClubeService);
 
-    return res.status(201).json(clube);
+    return res.status(201).json(await service.criar({ nome, rakeback }));
   }
 
-  listar(req: Request, res: Response): Response {
-    return res.json(this.service.listar());
+  async listar(req: Request, res: Response): Promise<Response> {
+    const service = container.resolve(ClubeService);
+    return res.json(await service.listar());
   }
 
-  editar(req: Request, res: Response): Response {
+  async editar(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
     const { nome, rakeback } = req.body;
 
-    return res.json(this.service.editar(id, { nome, rakeback }));
+    const service = container.resolve(ClubeService);
+
+    return res.json(await service.editar(id, { nome, rakeback }));
   }
 
-  excluir(req: Request, res: Response): Response {
+  async excluir(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
-    return res.json(this.service.excluir(id));
+
+    const service = container.resolve(ClubeService);
+    return res.json(await service.excluir(id));
   }
 }

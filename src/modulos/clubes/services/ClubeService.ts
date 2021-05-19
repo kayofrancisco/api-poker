@@ -1,4 +1,6 @@
-import Clube from '../model/Clube';
+import { inject, injectable } from 'tsyringe';
+
+import Clube from '../entities/Clube';
 import { IClubeRepository } from '../repositories/IClubeRepository';
 
 interface IClubeDTO {
@@ -6,26 +8,37 @@ interface IClubeDTO {
   rakeback: number;
 }
 
+@injectable()
 export default class ClubeService {
-  constructor(private repository: IClubeRepository) { }
+  constructor(
+    @inject('ClubeRepository')
+    private repository: IClubeRepository,
+  ) { }
 
-  criar({ nome, rakeback }: IClubeDTO): Clube {
-    if (this.repository.buscarPorNome(nome)) {
+  async criar({ nome, rakeback }: IClubeDTO): Promise<Clube> {
+    const clubeExiste = await this.repository.buscarPorNome(nome);
+
+    if (clubeExiste) {
       throw new Error(`Clube ${nome} já existe`);
     }
 
-    return this.repository.criar({ nome, rakeback });
+    const clube = await this.repository.criar({ nome, rakeback });
+
+    return clube;
   }
 
-  listar(): Clube[] {
-    return this.repository.buscarTodos();
+  async listar(): Promise<Clube[]> {
+    const clubes = await this.repository.buscarTodos();
+
+    return clubes;
   }
 
-  editar(id: string, { nome, rakeback }: IClubeDTO): Clube {
-    return this.repository.editar(id, { nome, rakeback });
+  async editar(id: string, { nome, rakeback }: IClubeDTO): Promise<Clube> {
+    const clube = await this.repository.editar(id, { nome, rakeback });
+    return clube;
   }
 
-  excluir(id: string): void {
-    this.repository.excluir(id);
+  async excluir(id: string): Promise<void> {
+    await this.repository.excluir(id);
   }
 }

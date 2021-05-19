@@ -1,15 +1,17 @@
 import { Router } from 'express';
 
-import clubeController from '../modulos/clubes/controllers';
+import ClubeController from '../modulos/clubes/controllers/ClubeController';
 
 const clubesRoutes = Router();
 
-clubesRoutes.post('/', (req, res) => clubeController.criar(req, res));
+const clubeController = new ClubeController();
 
-clubesRoutes.get('/', (req, res) => clubeController.listar(req, res));
+clubesRoutes.post('/', clubeController.criar);
 
-clubesRoutes.put('/:id', (req, res) => clubeController.editar(req, res));
+clubesRoutes.get('/', clubeController.listar);
 
-clubesRoutes.delete('/:id', (req, res) => clubeController.excluir(req, res));
+clubesRoutes.put('/:id', clubeController.editar);
+
+clubesRoutes.delete('/:id', clubeController.excluir);
 
 export default clubesRoutes;

@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import Partida from '../../model/Partida';
+import Partida from '../../entities/Partida';
 import { IPartidaRepository, ICriarPartidaDTO } from '../IPartidaRepository';
 
 export default class PartidaRepository implements IPartidaRepository {

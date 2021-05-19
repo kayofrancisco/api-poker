@@ -1,4 +1,4 @@
-import Clube from '../model/Clube';
+import Clube from '../entities/Clube';
 
 export interface ICriarClubeDTO {
   nome: string;
@@ -6,9 +6,9 @@ export interface ICriarClubeDTO {
 }
 
 export interface IClubeRepository {
-  criar({ nome, rakeback }: ICriarClubeDTO): Clube;
-  buscarTodos(): Clube[];
-  buscarPorNome(nome: string): Clube;
-  editar(id: string, { nome, rakeback }: ICriarClubeDTO): Clube;
-  excluir(id: string): void;
+  criar({ nome, rakeback }: ICriarClubeDTO): Promise<Clube>;
+  buscarTodos(): Promise<Clube[]>;
+  buscarPorNome(nome: string): Promise<Clube>;
+  editar(id: string, { nome, rakeback }: ICriarClubeDTO): Promise<Clube>;
+  excluir(id: string): Promise<void>;
 }

@@ -1,4 +1,4 @@
-import Modalidade from '../../model/Modalidade';
+import Modalidade from '../../entities/Modalidade';
 import { IModalidadeRepository, ICriarModalidadeDTO } from '../IModalidadeRepository';
 
 export default class ModalidadeRepository implements IModalidadeRepository {
