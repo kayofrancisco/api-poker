@@ -22,7 +22,7 @@ export default class ClubeRepository implements IClubeRepository {
   }
 
   async buscarPorNome(nome: string): Promise<Clube> {
-    const clube = this.repository.findOne({ where: { nome } });
+    const clube = await this.repository.findOne({ where: { nome } });
 
     return clube;
   }

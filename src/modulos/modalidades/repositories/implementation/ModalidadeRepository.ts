@@ -1,46 +1,32 @@
+import { getRepository, Repository } from 'typeorm';
+
 import Modalidade from '../../entities/Modalidade';
 import { IModalidadeRepository, ICriarModalidadeDTO } from '../IModalidadeRepository';
 
 export default class ModalidadeRepository implements IModalidadeRepository {
-  private modalidades: Modalidade[];
-  private static INSTANCE: ModalidadeRepository;
+  private repository: Repository<Modalidade>
 
-  private constructor() {
-    this.modalidades = [];
+  public constructor() {
+    this.repository = getRepository(Modalidade);
   }
 
-  public static getInstance(): ModalidadeRepository {
-    return this.INSTANCE ? this.INSTANCE : new ModalidadeRepository();
-  }
-
-  criar({ nome, modo }: ICriarModalidadeDTO): Modalidade {
-    const modalidade = new Modalidade();
-    Object.assign(modalidade, { nome, modo });
-
-    this.modalidades.push(modalidade);
+  async criar({ nome }: ICriarModalidadeDTO): Promise<Modalidade> {
+    const modalidade = await this.repository.save(this.repository.create({ nome }));
 
     return modalidade;
   }
 
-  buscarTodos(): Modalidade[] {
-    return this.modalidades;
+  async buscarTodos(): Promise<Modalidade[]> {
+    const modalidades = await this.repository.find();
+    return modalidades;
   }
 
-  buscarPorNome(nome: string): Modalidade {
-    return this.modalidades.find((modalidade) => modalidade.nome === nome);
+  async buscarPorNome(nome: string): Promise<Modalidade> {
+    const modalidade = await this.repository.findOne({ where: { nome } });
+    return modalidade;
   }
 
-  editar(id: string, { nome, modo }: ICriarModalidadeDTO): Modalidade {
-    const modalidadeIndex = this.modalidades.findIndex((item) => item.id === id);
-
-    Object.assign(this.modalidades[modalidadeIndex], { nome, modo });
-
-    return this.modalidades[modalidadeIndex];
-  }
-
-  excluir(id: string): void {
-    const index = this.modalidades.findIndex((item) => item.id === id);
-
-    this.modalidades.splice(index, 1);
+  async excluir(id: string): Promise<void> {
+    await this.repository.delete(id);
   }
 }

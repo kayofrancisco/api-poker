@@ -1,31 +1,38 @@
+import { inject, injectable } from 'tsyringe';
+
 import Modalidade from '../entities/Modalidade';
 import { IModalidadeRepository } from '../repositories/IModalidadeRepository';
 
 interface IModalidadeDTO {
   nome: string;
-  modo: 'Cash' | 'Torneio';
 }
 
+@injectable()
 export default class ModalidadeService {
-  constructor(private repository: IModalidadeRepository) { }
+  constructor(
+    @inject('ModalidadeRepository')
+    private repository: IModalidadeRepository,
+  ) { }
 
-  criar({ nome, modo }: IModalidadeDTO): Modalidade {
+  criar({ nome }: IModalidadeDTO): Promise<Modalidade> {
     if (this.repository.buscarPorNome(nome)) {
       throw new Error(`Clube ${nome} já existe`);
     }
 
-    return this.repository.criar({ nome, modo });
+    return this.repository.criar({ nome });
   }
 
-  listar(): Modalidade[] {
-    return this.repository.buscarTodos();
+  async listar(): Promise<Modalidade[]> {
+    const modalidades = await this.repository.buscarTodos();
+
+    return modalidades;
   }
 
-  editar(id: string, { nome, modo }: IModalidadeDTO): Modalidade {
-    return this.repository.editar(id, { nome, modo });
-  }
+  // editar(id: string, { nome }: IModalidadeDTO): Promise<Modalidade> {
+  //   return this.repository.editar(id, { nome });
+  // }
 
-  excluir(id: string): void {
-    this.repository.excluir(id);
-  }
+  // excluir(id: string): Promise<void> {
+  //   this.repository.excluir(id);
+  // }
 }

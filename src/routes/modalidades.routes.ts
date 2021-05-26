@@ -1,15 +1,17 @@
 import { Router } from 'express';
 
-import modalidadeController from '../modulos/modalidades/controllers';
+import ModalidadeController from '../modulos/modalidades/controllers/ModalidadeController';
 
 const modalidadesRoutes = Router();
 
-modalidadesRoutes.post('/', (req, res) => modalidadeController.criar(req, res));
+const modalidadeController = new ModalidadeController();
 
-modalidadesRoutes.get('/', (req, res) => modalidadeController.listar(req, res));
+// modalidadesRoutes.post('/', modalidadeController.);
 
-modalidadesRoutes.put('/:id', (req, res) => modalidadeController.editar(req, res));
+modalidadesRoutes.get('/', modalidadeController.listar);
 
-modalidadesRoutes.delete('/:id', (req, res) => modalidadeController.excluir(req, res));
+// modalidadesRoutes.put('/:id', modalidadeController);
+
+// modalidadesRoutes.delete('/:id', modalidadeController);
 
 export default modalidadesRoutes;

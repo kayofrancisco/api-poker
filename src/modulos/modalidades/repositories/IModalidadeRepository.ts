@@ -2,13 +2,11 @@ import Modalidade from '../entities/Modalidade';
 
 export interface ICriarModalidadeDTO {
   nome: string;
-  modo: 'Cash' | 'Torneio';
 }
 
 export interface IModalidadeRepository {
-  criar({ nome, modo }: ICriarModalidadeDTO): Modalidade;
-  buscarTodos(): Modalidade[];
-  buscarPorNome(nome: string): Modalidade;
-  editar(id: string, { nome, modo }: ICriarModalidadeDTO): Modalidade;
-  excluir(id: string): void;
+  criar({ nome }: ICriarModalidadeDTO): Promise<Modalidade>;
+  buscarTodos(): Promise<Modalidade[]>;
+  buscarPorNome(nome: string): Promise<Modalidade>;
+  excluir(id: string): Promise<void>;
 }
