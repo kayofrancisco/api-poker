@@ -1,23 +1,47 @@
-import { v4 as Uuidv4 } from 'uuid';
+import {
+  Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import Clube from '../../clubes/entities/Clube';
 import Modalidade from '../../modalidades/entities/Modalidade';
 
+@Entity('partidas')
 export default class Partida {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
-  clube: Clube;
-  modalidade: Modalidade;
-  numeroJogadores: number;
-  horarioInicio: Date;
-  duracao: Date;
-  humor: string;
-  mesaAgressiva: boolean;
-  blinds: number;
-  ganhos: number;
 
-  constructor() {
-    if (!this.id) {
-      this.id = Uuidv4();
-    }
-  }
+  @Column()
+  id_clube: string;
+
+  @ManyToOne(() => Clube)
+  @JoinColumn({ name: 'id_clube' })
+  clube: Clube;
+
+  @Column()
+  id_modalidade: string;
+
+  @ManyToOne(() => Modalidade)
+  @JoinColumn({ name: 'id_modalidade' })
+  modalidade: Modalidade;
+
+  @Column()
+  numeroJogadores: number;
+
+  @Column()
+  horarioInicio: Date;
+
+  @Column()
+  duracao: Date;
+
+  @Column()
+  humor: string;
+
+  @Column()
+  mesaAgressiva: boolean;
+
+  @Column()
+  blinds: number;
+
+  @Column()
+  ganhos: number;
 }
