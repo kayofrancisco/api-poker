@@ -10,8 +10,8 @@ export default class Partida {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  id_clube: string;
+  @Column({ name: 'id_clube' })
+  idClube: string;
 
   @ManyToOne(() => Clube)
   @JoinColumn({ name: 'id_clube' })
