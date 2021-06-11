@@ -14,6 +14,7 @@ export class CriarClube1621429922943 implements MigrationInterface {
       {
         name: 'nome',
         type: 'varchar',
+        isUnique: true,
       },
       {
         name: 'rakeback',
