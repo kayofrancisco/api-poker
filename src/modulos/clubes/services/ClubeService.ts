@@ -1,5 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
+import { AppError } from '../../../errors/AppError';
 import Clube from '../entities/Clube';
 import { IClubeRepository } from '../repositories/IClubeRepository';
 
@@ -16,14 +17,9 @@ export default class ClubeService {
   ) { }
 
   async criar({ nome, rakeback }: IClubeDTO): Promise<Clube> {
-    const clubeExiste = await this.repository.buscarPorNome(nome);
-
-    if (clubeExiste) {
-      throw new Error(`Clube ${nome} já existe`);
-    }
+    await this.validaClube({ nome, rakeback });
 
     const clube = await this.repository.criar({ nome, rakeback });
-
     return clube;
   }
 
@@ -40,5 +36,25 @@ export default class ClubeService {
 
   async excluir(id: string): Promise<void> {
     await this.repository.excluir(id);
+  }
+
+  private async validaClube({ nome }: IClubeDTO): Promise<void> {
+    const errors = [];
+
+    if (!nome) {
+      errors.push('Nome do clube deve ser informado');
+    }
+
+    if (nome) {
+      const clubeExiste = await this.repository.buscarPorNome(nome);
+
+      if (clubeExiste) {
+        errors.push(`Clube ${nome} já existe`);
+      }
+    }
+
+    if (errors.length > 0) {
+      throw new AppError(errors);
+    }
   }
 }

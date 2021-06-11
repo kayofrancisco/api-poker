@@ -1,5 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
+import { AppError } from '../../../errors/AppError';
 import Modalidade from '../entities/Modalidade';
 import { IModalidadeRepository } from '../repositories/IModalidadeRepository';
 
@@ -16,7 +17,7 @@ export default class ModalidadeService {
 
   criar({ nome }: IModalidadeDTO): Promise<Modalidade> {
     if (this.repository.buscarPorNome(nome)) {
-      throw new Error(`Clube ${nome} já existe`);
+      throw new AppError(`Modalidade ${nome} já existe`);
     }
 
     return this.repository.criar({ nome });
