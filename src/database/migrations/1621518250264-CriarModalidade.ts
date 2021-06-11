@@ -16,6 +16,7 @@ export class CriarModalidade1621518250264 implements MigrationInterface {
       {
         name: 'nome',
         type: 'varchar',
+        isUnique: true,
       }],
     }));
 
